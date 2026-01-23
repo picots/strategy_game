@@ -20,13 +20,21 @@ class GameScreenState extends State<GameScreen> {
 
   void _initializeGame() {
     units = [
+      Unit(type: UnitType.archer, owner: Player.one, health: 70, row: 7, col: 1),
       Unit(type: UnitType.warrior, owner: Player.one, health: 100, row: 7, col: 2),
-      Unit(type: UnitType.archer, owner: Player.one, health: 70, row: 7, col: 4),
-      Unit(type: UnitType.tank, owner: Player.one, health: 150, row: 7, col: 5),
+      Unit(type: UnitType.tank, owner: Player.one, health: 150, row: 7, col: 3),
+      Unit(type: UnitType.tank, owner: Player.one, health: 150, row: 7, col: 4),
+      Unit(type: UnitType.warrior, owner: Player.one, health: 100, row: 7, col: 5),
+      Unit(type: UnitType.archer, owner: Player.one, health: 70, row: 7, col: 6),
       
+
+
+      Unit(type: UnitType.archer, owner: Player.two, health: 70, row: 0, col: 1),
       Unit(type: UnitType.warrior, owner: Player.two, health: 100, row: 0, col: 2),
-      Unit(type: UnitType.archer, owner: Player.two, health: 70, row: 0, col: 4),
-      Unit(type: UnitType.tank, owner: Player.two, health: 150, row: 0, col: 5),
+      Unit(type: UnitType.tank, owner: Player.two, health: 150, row: 0, col: 3),
+      Unit(type: UnitType.tank, owner: Player.two, health: 150, row: 0, col: 4),
+      Unit(type: UnitType.warrior, owner: Player.two, health: 100, row: 0, col: 5),
+      Unit(type: UnitType.archer, owner: Player.two, health: 70, row: 0, col: 6),
     ];
   }
 
