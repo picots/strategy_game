@@ -236,37 +236,42 @@ class GameScreenState extends State<GameScreen> {
                             border: Border.all(color: Colors.black45, width: 0.5),
                           ),
                           child: unit != null
-                              ? Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      unit.icon,
-                                      style: const TextStyle(fontSize: 24),
-                                    ),
-                                    Container(
-                                      margin: const EdgeInsets.only(top: 2),
-                                      width: 30,
-                                      height: 4,
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey[300],
-                                        borderRadius: BorderRadius.circular(2),
-                                      ),
-                                      child: FractionallySizedBox(
-                                        alignment: Alignment.centerLeft,
-                                        widthFactor: unit.health / unit.maxHealth,
-                                        child: Container(
+                              ? LayoutBuilder(
+                                  builder: (context, constraints) {
+                                    double cellSize = constraints.maxWidth;
+                                    return Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          unit.icon,
+                                          style: TextStyle(fontSize: cellSize * 0.4),
+                                        ),
+                                        SizedBox(height: cellSize * 0.05),
+                                        Container(
+                                          margin: EdgeInsets.symmetric(horizontal: cellSize * 0.1),
+                                          height: cellSize * 0.12,
                                           decoration: BoxDecoration(
-                                            color: unit.health > unit.maxHealth * 0.5
-                                                ? Colors.green
-                                                : unit.health > unit.maxHealth * 0.25
-                                                    ? Colors.orange
-                                                    : Colors.red,
+                                            color: Colors.grey[300],
                                             borderRadius: BorderRadius.circular(2),
                                           ),
+                                          child: FractionallySizedBox(
+                                            alignment: Alignment.centerLeft,
+                                            widthFactor: unit.health / unit.maxHealth,
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: unit.health > unit.maxHealth * 0.5
+                                                    ? Colors.green
+                                                    : unit.health > unit.maxHealth * 0.25
+                                                        ? Colors.orange
+                                                        : Colors.red,
+                                                borderRadius: BorderRadius.circular(2),
+                                              ),
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                  ],
+                                      ],
+                                    );
+                                  },
                                 )
                               : null,
                         ),
@@ -278,14 +283,14 @@ class GameScreenState extends State<GameScreen> {
             ),
           ),
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(8),
             child: Column(
               children: [
                 const Text(
                   'Légende:',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 4),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -305,9 +310,9 @@ class GameScreenState extends State<GameScreen> {
   Widget _buildLegendItem(String icon, String name, String stats) {
     return Column(
       children: [
-        Text(icon, style: const TextStyle(fontSize: 24)),
-        Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
-        Text(stats, style: const TextStyle(fontSize: 10)),
+        Text(icon, style: const TextStyle(fontSize: 20)),
+        Text(name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 10)),
+        Text(stats, style: const TextStyle(fontSize: 8), textAlign: TextAlign.center),
       ],
     );
   }
