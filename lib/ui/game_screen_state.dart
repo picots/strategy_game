@@ -45,7 +45,7 @@ class GameScreenState extends State<GameScreen> {
   }
 
   bool canMove(Unit unit, int toRow, int toCol) {
-    if (unit.hasMoved) return false;
+    if (currentPlayer.hasMoved) return false;
     if (getUnitAt(toRow, toCol) != null) return false;
     
     int distance = (unit.row - toRow).abs() + (unit.col - toCol).abs();
@@ -53,7 +53,7 @@ class GameScreenState extends State<GameScreen> {
   }
 
   bool canAttack(Unit attacker, Unit target) {
-    if (attacker.hasAttacked) return false;
+    if (currentPlayer.hasAttacked) return false;
     if (attacker.owner == target.owner) return false;
     
     int distance = (attacker.row - target.row).abs() + (attacker.col - target.col).abs();
@@ -64,7 +64,7 @@ class GameScreenState extends State<GameScreen> {
     setState(() {
       unit.row = toRow;
       unit.col = toCol;
-      unit.hasMoved = true;
+      currentPlayer.hasMoved = true;
       selectedUnit = null;
       message = "${currentPlayer == Player.one ? 'Joueur 1' : 'Joueur 2'} - Unité déplacée";
     });
@@ -73,7 +73,7 @@ class GameScreenState extends State<GameScreen> {
   void _attack(Unit attacker, Unit target) {
     setState(() {
       target.health -= attacker.attack;
-      attacker.hasAttacked = true;
+      currentPlayer.hasAttacked = true;
       
       if (target.health <= 0) {
         units.remove(target);
@@ -127,8 +127,8 @@ class GameScreenState extends State<GameScreen> {
     setState(() {
       for (var unit in units) {
         if (unit.owner == currentPlayer) {
-          unit.hasMoved = false;
-          unit.hasAttacked = false;
+          currentPlayer.hasMoved = false;
+          currentPlayer.hasAttacked = false;
         }
       }
       

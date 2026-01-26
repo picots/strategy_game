@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 
-enum Player { 
-  one(Colors.blue), 
-  two(Colors.red);
+class Player {
+  final Color color;
+  bool hasMoved, hasAttacked;
 
-  final Color _color;
+  Player(this.color, {this.hasMoved = false, this.hasAttacked = false});
 
-  const Player(this._color);
-
-  Color get color => _color;
+  static Player one = Player(Colors.blue);
+  static Player two = Player(Colors.red);
 }

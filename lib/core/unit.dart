@@ -9,8 +9,6 @@ class Unit {
   int health;
   int row;
   int col;
-  bool hasMoved;
-  bool hasAttacked;
 
   Unit({
     required this.type,
@@ -18,8 +16,6 @@ class Unit {
     required this.health,
     required this.row,
     required this.col,
-    this.hasMoved = false,
-    this.hasAttacked = false,
   });
 
   int get maxHealth => type.maxHealth;
