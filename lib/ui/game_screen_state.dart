@@ -36,7 +36,7 @@ class GameScreenState extends State<GameScreen> {
     ];
   }
 
-  Unit? _getUnitAt(int row, int col) {
+  Unit? getUnitAt(int row, int col) {
     try {
       return units.firstWhere((u) => u.row == row && u.col == col);
     } catch (e) {
@@ -44,15 +44,15 @@ class GameScreenState extends State<GameScreen> {
     }
   }
 
-  bool _canMove(Unit unit, int toRow, int toCol) {
+  bool canMove(Unit unit, int toRow, int toCol) {
     if (unit.hasMoved) return false;
-    if (_getUnitAt(toRow, toCol) != null) return false;
+    if (getUnitAt(toRow, toCol) != null) return false;
     
     int distance = (unit.row - toRow).abs() + (unit.col - toCol).abs();
     return distance <= unit.movement;
   }
 
-  bool _canAttack(Unit attacker, Unit target) {
+  bool canAttack(Unit attacker, Unit target) {
     if (attacker.hasAttacked) return false;
     if (attacker.owner == target.owner) return false;
     
@@ -139,7 +139,7 @@ class GameScreenState extends State<GameScreen> {
   }
 
   void _onCellTap(int row, int col) {
-    Unit? unitAtCell = _getUnitAt(row, col);
+    Unit? unitAtCell = getUnitAt(row, col);
     
     if (selectedUnit == null) {
       if (unitAtCell != null && unitAtCell.owner == currentPlayer) {
@@ -150,11 +150,11 @@ class GameScreenState extends State<GameScreen> {
       }
     } else {
       if (unitAtCell == null) {
-        if (_canMove(selectedUnit!, row, col)) {
+        if (canMove(selectedUnit!, row, col)) {
           _moveUnit(selectedUnit!, row, col);
         }
       } else if (unitAtCell.owner != currentPlayer) {
-        if (_canAttack(selectedUnit!, unitAtCell)) {
+        if (canAttack(selectedUnit!, unitAtCell)) {
           _attack(selectedUnit!, unitAtCell);
         }
       } else if (unitAtCell == selectedUnit) {
@@ -215,16 +215,16 @@ class GameScreenState extends State<GameScreen> {
                     itemBuilder: (context, index) {
                       int row = index ~/ gridSize;
                       int col = index % gridSize;
-                      Unit? unit = _getUnitAt(row, col);
+                      Unit? unit = getUnitAt(row, col);
                       bool isSelected = selectedUnit != null && 
                                        selectedUnit!.row == row && 
                                        selectedUnit!.col == col;
                       bool canMoveHere = selectedUnit != null && 
                                         unit == null && 
-                                        _canMove(selectedUnit!, row, col);
+                                        canMove(selectedUnit!, row, col);
                       bool canAttackHere = selectedUnit != null && 
                                           unit != null && 
-                                          _canAttack(selectedUnit!, unit);
+                                          canAttack(selectedUnit!, unit);
 
                       return GestureDetector(
                         onTap: () => _onCellTap(row, col),

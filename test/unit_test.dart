@@ -2,9 +2,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:strategy_game/core/unit.dart';
 import 'package:strategy_game/core/player.dart';
 import 'package:strategy_game/core/unit_type.dart';
+import 'package:strategy_game/ui/game_screen_state.dart';
 
 void main() {
-  group('Tests', () {
+  group('Unités', () {
     test('Guerrier a les bonnes statistiques', () {
       final warrior = Unit(
         type: UnitType.warrior,
@@ -39,7 +40,7 @@ void main() {
       
       target.health -= attacker.attack;
       
-      expect(target.health, 40); // 70 - 30 = 40
+      expect(target.health, 40);
     });
     
     test('Distance de mouvement correcte', () {
@@ -56,22 +57,52 @@ void main() {
   });
   
   group('Game State', () {
-    late List<Unit> units;
+    late GameScreenState gameState;
     
     setUp(() {
-      units = [
-        Unit(type: UnitType.warrior, owner: Player.one, health: 100, row: 0, col: 0),
-        Unit(type: UnitType.archer, owner: Player.two, health: 70, row: 5, col: 5),
-      ];
+      gameState = GameScreenState();
+      gameState.initState();
     });
     
     test('Nombre d\'unités initial', () {
-      expect(units.length, 2);
+      expect(gameState.units.length, 12);
     });
     
     test('Éliminer une unité', () {
-      units.removeAt(0);
-      expect(units.length, 1);
+      gameState.units.removeAt(0);
+      expect(gameState.units.length, 11);
     });
+
+    test('Récupérer une unité par position', () {
+      final unit1 = gameState.getUnitAt(0, 0);
+      final unit2 = gameState.getUnitAt(0, 1);
+      expect(unit1, null);
+      expect(unit2?.type, UnitType.archer);
+    });
+
+    test('Mouvement légal', () {
+      final unit1 = gameState.getUnitAt(0, 1)!;
+      final unit2 = gameState.getUnitAt(0, 2)!;
+      final unit3 = gameState.getUnitAt(0, 3)!;
+      expect(gameState.canMove(unit1, 1, 1), true);
+      expect(gameState.canMove(unit1, 3, 1), false);
+      expect(gameState.canMove(unit2, 2, 2), true);
+      expect(gameState.canMove(unit2, 1, 0), false);
+      expect(gameState.canMove(unit3, 1, 3), true);
+      expect(gameState.canMove(unit3, 2, 1), false);
+    });
+
+    test('Attaque légale', () {
+      final attacker = Unit(owner: Player.one, type: UnitType.archer, health: 70, row: 2, col: 1);
+      final targetInRange = Unit(owner: Player.two, type: UnitType.warrior, health: 100, row: 5, col: 1);
+      final targetSameOwner = Unit(owner: Player.one, type: UnitType.warrior, health: 100, row: 0, col: 2);
+      final targetOutOfRange = Unit(owner: Player.two, type: UnitType.warrior, health: 100, row: 7, col: 2);
+
+      expect(gameState.canAttack(attacker, targetInRange), true);
+      expect(gameState.canAttack(attacker, targetSameOwner), false);
+      expect(gameState.canAttack(attacker, targetOutOfRange), false);
+    });
+
+    
   });
 }
