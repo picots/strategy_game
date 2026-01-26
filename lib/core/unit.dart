@@ -33,4 +33,6 @@ class Unit {
   String get icon => type.icon;
 
   Color get color => owner.color;
+
+  String get name => type.name;
 }

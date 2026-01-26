@@ -27,8 +27,6 @@ class GameScreenState extends State<GameScreen> {
       Unit(type: UnitType.warrior, owner: Player.one, health: 100, row: 7, col: 5),
       Unit(type: UnitType.archer, owner: Player.one, health: 70, row: 7, col: 6),
       
-
-
       Unit(type: UnitType.archer, owner: Player.two, health: 70, row: 0, col: 1),
       Unit(type: UnitType.warrior, owner: Player.two, health: 100, row: 0, col: 2),
       Unit(type: UnitType.tank, owner: Player.two, health: 150, row: 0, col: 3),
@@ -79,10 +77,10 @@ class GameScreenState extends State<GameScreen> {
       
       if (target.health <= 0) {
         units.remove(target);
-        message = "${attacker.icon} a éliminé ${target.icon} !";
+        message = "${attacker.name} de ${attacker.owner == Player.one ? 'Joueur 1' : 'Joueur 2'} a éliminé ${target.name} de ${target.owner == Player.one ? 'Joueur 1' : 'Joueur 2'} !";
         _checkWinCondition();
       } else {
-        message = "${attacker.icon} attaque ${target.icon} pour ${attacker.attack} dégâts !";
+        message = "${attacker.name} de ${attacker.owner == Player.one ? 'Joueur 1' : 'Joueur 2'} attaque ${target.name} de ${target.owner == Player.one ? 'Joueur 1' : 'Joueur 2'} pour ${attacker.attack} dégâts !";
       }
       
       selectedUnit = null;
@@ -147,7 +145,7 @@ class GameScreenState extends State<GameScreen> {
       if (unitAtCell != null && unitAtCell.owner == currentPlayer) {
         setState(() {
           selectedUnit = unitAtCell;
-          message = "${unitAtCell.icon} sélectionné - Déplacez ou attaquez";
+          message = "${unitAtCell.name} sélectionné - Déplacez ou attaquez";
         });
       }
     } else {
