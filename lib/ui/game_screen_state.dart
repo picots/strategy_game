@@ -36,6 +36,9 @@ class GameScreenState extends State<GameScreen> {
     ];
   }
 
+  String _getOwnerName(Unit unit) => unit.owner == Player.one ? 'Joueur 1' : 'Joueur 2';
+  String _getPlayerName(Player player) => player == Player.one ? 'Joueur 1' : 'Joueur 2';
+
   Unit? getUnitAt(int row, int col) {
     try {
       return units.firstWhere((u) => u.row == row && u.col == col);
@@ -66,7 +69,7 @@ class GameScreenState extends State<GameScreen> {
       unit.col = toCol;
       currentPlayer.hasMoved = true;
       selectedUnit = null;
-      message = "${currentPlayer == Player.one ? 'Joueur 1' : 'Joueur 2'} - Unité déplacée";
+      message = "${_getPlayerName(currentPlayer)} - Unité déplacée";
     });
   }
 
@@ -77,10 +80,10 @@ class GameScreenState extends State<GameScreen> {
       
       if (target.health <= 0) {
         units.remove(target);
-        message = "${attacker.name} de ${attacker.owner == Player.one ? 'Joueur 1' : 'Joueur 2'} a éliminé ${target.name} de ${target.owner == Player.one ? 'Joueur 1' : 'Joueur 2'} !";
+        message = "${attacker.name} de ${_getOwnerName(attacker)} a éliminé ${target.name} de ${_getOwnerName(target)} !";
         _checkWinCondition();
       } else {
-        message = "${attacker.name} de ${attacker.owner == Player.one ? 'Joueur 1' : 'Joueur 2'} attaque ${target.name} de ${target.owner == Player.one ? 'Joueur 1' : 'Joueur 2'} pour ${attacker.attack} dégâts !";
+        message = "${attacker.name} de ${_getOwnerName(attacker)} attaque ${target.name} de ${_getOwnerName(target)} pour ${attacker.attack} dégâts !";
       }
       
       selectedUnit = null;
@@ -104,7 +107,7 @@ class GameScreenState extends State<GameScreen> {
       barrierDismissible: false,
       builder: (context) => AlertDialog(
         title: Text('Victoire !'),
-        content: Text('${winner == Player.one ? 'Joueur 1' : 'Joueur 2'} a gagné !'),
+        content: Text('${_getPlayerName(winner)} a gagné !'),
         actions: [
           TextButton(
             onPressed: () {
@@ -134,7 +137,7 @@ class GameScreenState extends State<GameScreen> {
       
       currentPlayer = currentPlayer == Player.one ? Player.two : Player.one;
       selectedUnit = null;
-      message = "Tour du ${currentPlayer == Player.one ? 'Joueur 1' : 'Joueur 2'} - Sélectionnez une unité";
+      message = "Tour du ${_getPlayerName(currentPlayer)} - Sélectionnez une unité";
     });
   }
 
